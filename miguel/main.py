@@ -1,27 +1,44 @@
 import pygame
 import random
 from Garbage import Garbage
-
+from random import randint
+from Aspirador import Aspirador
 
 # Inicialização do Pygame
 pygame.init()
 
-# Defina a tela e o personagem (player)
-screen = pygame.display.set_mode((800, 600))
-player = pygame.sprite.Sprite()
-player.image = pygame.Surface((50, 50))
-player.image.fill((255, 0, 0))
-player.rect = player.image.get_rect()
-player.rect.center = (400, 300)
 
-# Crie um grupo de sprites
+larguraMundo, alturaMundo = 10, 10
+# Defina a tela e o personagem (player)
+screen = pygame.display.set_mode((larguraMundo*100, alturaMundo*100))
+
+
+player = Aspirador()
+player.setPos(0, 0)
+
+
+ #Variáveis para o tamanho do mundo
+
+mundo = player.criarMundo(larguraMundo, alturaMundo)
+
+player_sprite = pygame.sprite.Group()
+player_sprite.add(player)
+
 all_sprites = pygame.sprite.Group()
 
-# Adicione algumas sprites aleatórias ao grupo
-for _ in range(10):
-    sprite = Garbage(random.randint(0, 800), random.randint(0, 600))
-    
-    all_sprites.add(sprite)
+
+
+for i in range(len(mundo)):
+    for j in range(len(mundo)):
+         if mundo[i][j] == 1:
+            sprite = Garbage(100*i, 100*j)    
+            all_sprites.add(sprite)
+
+
+
+clock = pygame.time.Clock()
+FPS = 60  # Defina o FPS desejado
+
 
 # Loop principal do jogo
 running = True
@@ -30,7 +47,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Atualize a posição do jogador
+
+
+
+    #player.moveOnScreen()
+    #Função para mover o aspirador
+   
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player.rect.x -= 1
@@ -40,21 +62,26 @@ while running:
         player.rect.y -= 1
     if keys[pygame.K_DOWN]:
         player.rect.y += 1
+        
+        
+        
+        
+        
 
-    # Verifique colisões entre o jogador e as sprites
     collided_sprites = pygame.sprite.spritecollide(player, all_sprites, True)
 
-    # Remova as sprites que colidiram do grupo
     for sprite in collided_sprites:
         all_sprites.remove(sprite)
 
-    # Limpe a tela
     screen.fill((0, 0, 0))
-
-    # Desenhe todos os sprites restantes
-    all_sprites.draw(screen)
-    pygame.draw.rect(screen, (255, 0, 0), player.rect)
     
+    player.update()
+
+    all_sprites.draw(screen)
+    player_sprite.draw(screen)
+    
+    
+    clock.tick(FPS)
 
 
     pygame.display.flip()
