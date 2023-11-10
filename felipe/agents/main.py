@@ -8,16 +8,16 @@ from sight import SuperSightVacuum, OptimizedSuperSightVacuum
 
 if __name__ == "__main__":
     agents = [
-        # BogoVacuum,
-        # RandomMovementVacuum,
-        # NoRepeatVacuum,
+        BogoVacuum,
+        RandomMovementVacuum,
+        NoRepeatVacuum,
         SpiralVacuum,
-        # SuperSightVacuum,
-        # OptimizedSuperSightVacuum,
+        SuperSightVacuum,
+        OptimizedSuperSightVacuum,
     ]
     boards = [
-        (20, 20, 400),
-        # (100, 100, 3500),
+        (20, 20, 200),
+        (100, 100, 3500),
         # (100, 100, 6500),
         # (1000, 1000, 350000),
         # (1000, 1000, 650000),
@@ -54,7 +54,7 @@ if __name__ == "__main__":
             # Run the vacuum
             print("\n# Running agent...")
             real_time = time.time()
-            vacuum.run(agent_env, True)
+            vacuum.run(agent_env, False)
 
             print("# Finished!")
             real_time = time.time() - real_time
@@ -76,4 +76,6 @@ if __name__ == "__main__":
             print(f"Dirty squares cleaned: {cleaned_spaces}/{dirty_spaces}")
             print(f"Percentage of the total board cleaned: {percentage_cleaned:.2f}%")
             print(f"Total time elapsed: {real_time:.4f} seconds")
+            if battery is not None:
+                print(f"Left over battery: {vacuum.battery}/{battery}")
             print("=======================\n")

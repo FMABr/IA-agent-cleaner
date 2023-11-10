@@ -15,7 +15,9 @@ class SuperSightVacuum(VacuumAgent):
     def check(self):
         if self.battery is None or self.battery >= 5:
             if self.battery:
-                self.battery -= 5  # Adjust battery cost for check action
+                self.battery = round(
+                    self.battery * 0.95
+                )  # Adjust battery cost for check action
             self.history.append("Checked the entire board for cleanliness")
             self.memory = [
                 [i, j]
