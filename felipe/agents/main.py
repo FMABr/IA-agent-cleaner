@@ -8,15 +8,15 @@ from sight import SuperSightVacuum, OptimizedSuperSightVacuum
 
 if __name__ == "__main__":
     agents = [
-        BogoVacuum,
-        RandomMovementVacuum,
-        NoRepeatVacuum,
+        # BogoVacuum,
+        # RandomMovementVacuum,
+        # NoRepeatVacuum,
         SpiralVacuum,
-        SuperSightVacuum,
-        OptimizedSuperSightVacuum,
+        # SuperSightVacuum,
+        # OptimizedSuperSightVacuum,
     ]
     boards = [
-        (20, 20, 200),
+        (20, 20, 400),
         # (100, 100, 3500),
         # (100, 100, 6500),
         # (1000, 1000, 350000),
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 battery = None
             else:
                 battery = int(battery)
-            vacuum = agent(battery)
+            vacuum = agent(battery=battery, position=[0, 0])
 
             # Run the vacuum
             print("\n# Running agent...")

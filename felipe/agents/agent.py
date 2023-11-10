@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class VacuumAgent(ABC):
-    def __init__(self, battery=None):
-        self.position = [0, 0]
+    def __init__(self, battery=None, position=[0, 0]):
+        self.position = position
         self.battery = battery
         self.history = []
         self.environment = None

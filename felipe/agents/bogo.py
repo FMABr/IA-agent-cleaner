@@ -39,17 +39,17 @@ class NoRepeatVacuum(VacuumAgent):
     Never moves to a square it has already been in.
     """
 
-    def __init__(self, battery=None):
-        super().__init__(battery)
+    def __init__(self, battery=None, position=[0, 0]):
+        super().__init__(battery=battery, position=position)
         # Initialize memory to store previous positions
         self.memory = set()
         self.memory.add(tuple(self.position))
 
     def move(self, direction):
-        options = ["north", "south", "west", "east"]
         if self.battery is None or self.battery > 0:
             new_position = None
 
+            options = ["north", "south", "west", "east"]
             while len(options) > 0:
                 new_position = self.position.copy()
                 if direction == "north":

@@ -6,8 +6,8 @@ class SpiralVacuum(VacuumAgent):
 
     Turns when hitting a wall or if going back to a previously occupied square"""
 
-    def __init__(self, battery=None):
-        super().__init__(battery)
+    def __init__(self, battery=None, position=[0, 0]):
+        super().__init__(battery=battery, position=position)
 
         self.memory = set()
         self.memory.add(tuple(self.position))
@@ -19,28 +19,39 @@ class SpiralVacuum(VacuumAgent):
 
     def move(self):
         if self.battery is None or self.battery > 0:
-            direction = self.directions[self.next_direction]
-            new_position = self.position.copy()
+            new_position = None
 
-            if direction == "north":
-                new_position[0] -= 1
-            elif direction == "south":
-                new_position[0] += 1
-            elif direction == "west":
-                new_position[1] -= 1
-            elif direction == "east":
-                new_position[1] += 1
+            times_turned = 0
+            while times_turned < 4:
+                new_position = self.position.copy()
+                direction = self.directions[self.next_direction]
 
-            memo = tuple(new_position)
-            if memo in self.memory:
-                self.turn()
-                return
-            elif self.battery:
-                self.battery -= 1
+                if direction == "north":
+                    new_position[0] -= 1
+                elif direction == "south":
+                    new_position[0] += 1
+                elif direction == "west":
+                    new_position[1] -= 1
+                elif direction == "east":
+                    new_position[1] += 1
 
-            self.memory.add(memo)
+                memo = tuple(new_position)
+                if memo in self.memory:
+                    self.history.append(
+                        f"Already moved {direction} - choosing different direction"
+                    )
+                    times_turned += 1
+                    self.turn()
+                    continue
+                elif self.battery:
+                    self.battery -= 1
 
-            if (
+                self.memory.add(memo)
+                break
+
+            if times_turned == 4:
+                self.history.append("No possible movements")
+            elif (
                 0 <= new_position[0] < self.environment.M
                 and 0 <= new_position[1] < self.environment.N
             ):

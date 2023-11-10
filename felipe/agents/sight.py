@@ -7,8 +7,8 @@ class SuperSightVacuum(VacuumAgent):
     Each time it acts, moves towards the next dirty square. If on a dirty square, cleans it.
     """
 
-    def __init__(self, battery=None):
-        super().__init__(battery)
+    def __init__(self, battery=None, position=[0, 0]):
+        super().__init__(battery=battery, position=position)
         # Initialize memory to store positions needing cleaning
         self.memory = []
 
@@ -58,8 +58,8 @@ class OptimizedSuperSightVacuum(VacuumAgent):
     - Otherwise, moves towards the nearest dirty square.
     """
 
-    def __init__(self, battery=None):
-        super().__init__(battery)
+    def __init__(self, battery=None, position=[0, 0]):
+        super().__init__(battery=battery, position=position)
         # Initialize memory to store positions needing cleaning
         self.memory = set()
         # Nearest dirty square
