@@ -50,6 +50,10 @@ class VacuumAgent(ABC):
                     f"Cleaned position ({self.position[0]}, {self.position[1]})"
                 )
                 self.environment.board[self.position[0]][self.position[1]] = True
+            else:
+                self.history.append(
+                    f"Tried to clean position ({self.position[0]},{self.position[1]})"
+                )
 
     def run(self, env, log=False):
         self.environment = env
