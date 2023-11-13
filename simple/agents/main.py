@@ -11,9 +11,9 @@ def carregar_ambiente(linhas, colunas, porcentagem):
     environment = Board(linhas, colunas)
 
     with open(arquivo, "r") as arquivo:
-        for linha in arquivo:
-            for ch in linha.strip().split():
-                environment.board = not bool(int(ch))
+        for i, linha in enumerate(arquivo):
+            for j, ch in enumerate(linha.strip().split()):
+                environment.board[i][j] = not bool(int(ch))
 
     return environment
 
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     agents = [
         # BogoVacuum,
         # RandomMovementVacuum,
-        NoRepeatVacuum,
-        # SpiralVacuum,
+        # NoRepeatVacuum,
+        SpiralVacuum,
         # SuperSightVacuum,
         # OptimizedSuperSightVacuum,
     ]
