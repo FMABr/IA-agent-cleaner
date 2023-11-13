@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { useEventListener } from "@vueuse/core";
 
 interface Dimension {
   width: number;
@@ -26,24 +27,31 @@ function preloadImage(src: string) {
 export function useTileset(
   plane: CanvasRenderingContext2D,
   src: string,
-  { width, height }: Dimension
+  tileSize: Dimension
 ) {
   const tileset = preloadImage(src);
+  const { width: sw, height: sh } = tileSize;
 
   const loaded = ref(false);
-  tileset.onload = () => (loaded.value = true);
 
-  const drawTile = (tile: Position, target: Position) => {
-    plane?.drawImage(
+  useEventListener(tileset, "load", () => (loaded.value = true));
+
+  const drawTile = (
+    source: Position,
+    destination: Position,
+    destSize?: Dimension
+  ) => {
+    const { width: dw, height: dh } = destSize ?? tileSize;
+    plane.drawImage(
       tileset,
-      tile.x * width,
-      tile.y * height,
-      width,
-      height,
-      target.x,
-      target.y,
-      width,
-      height
+      source.x * sw,
+      source.y * sh,
+      sw,
+      sh,
+      destination.x,
+      destination.y,
+      dw,
+      dh
     );
   };
 
